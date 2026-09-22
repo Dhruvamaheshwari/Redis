@@ -19,29 +19,37 @@
 
 ## About
 
-This repository is a step-by-step learning space for Redis. The first example is a small Express API that connects to:
+This repository is a step-by-step learning space for Redis. The examples are small Express APIs that connect to:
 
 - Redis, using `ioredis`
 - MongoDB, using `mongoose`
 - Docker Compose for local database services
 
-The current example lives in [`01`](01/).
+The examples currently live in [`01`](01/) and [`02-site-banner`](02-site-banner/).
 
 ## Project structure
 
 ```text
 Redis/
 |-- README.md
-`-- 01/
-    |-- docker-compose.yml
-    |-- node.txt
-    |-- package.json
-    |-- package-lock.json
-    `-- src/
-        `-- index.js
+|-- 01/
+|   |-- docker-compose.yml
+|   |-- node.txt
+|   |-- package.json
+|   |-- package-lock.json
+|   `-- src/
+|       `-- index.js
+`-- 02-site-banner/
+  |-- node.txt
+  |-- package.json
+  |-- package-lock.json
+  `-- src/
+    `-- index.js
 ```
 
 Read [`01/node.txt`](01/node.txt) for detailed notes about the example, commands, endpoints, environment variables, and troubleshooting.
+
+Read [`02-site-banner/node.txt`](02-site-banner/node.txt) for detailed notes about the banner API, Redis commands, request examples, and troubleshooting.
 
 ## Quick start
 
@@ -126,6 +134,41 @@ Remove containers and all stored learning data:
 docker compose down -v
 ```
 
+## Example 02: Site banner API
+
+The [`02-site-banner`](02-site-banner/) example uses Redis as a simple shared store for a website banner message. It demonstrates the core Redis key commands through an Express API:
+
+| Method | Endpoint | Redis operation | Purpose |
+| --- | --- | --- | --- |
+| POST | `/banner` | `SET` | Create or update the banner message |
+| GET | `/banner` | `GET` | Read the current banner message |
+| DELETE | `/banner` | `DEL` | Remove the banner message |
+| GET | `/banner/health` | `EXISTS` | Check whether a banner exists |
+
+Run it from its folder after Redis is available:
+
+```bash
+cd 02-site-banner
+npm install
+npm run dev
+```
+
+It runs at `http://localhost:3000` by default.
+
+Create a banner:
+
+```powershell
+Invoke-RestMethod -Method Post -Uri http://localhost:3000/banner -ContentType "application/json" -Body '{"message":"Redis learning banner"}'
+```
+
+Read it:
+
+```powershell
+Invoke-RestMethod http://localhost:3000/banner
+```
+
+The current source uses the environment variable `Redis_url` and defaults to `redis://localhost:6379`. See [`02-site-banner/node.txt`](02-site-banner/node.txt) for the complete notes.
+
 ## Redis learning path
 
 1. Connect to Redis from Node.js.
@@ -186,7 +229,7 @@ This project is intended for local learning. The Redis and MongoDB ports are pub
 
 Future numbered folders can build on this foundation, for example:
 
-- `02/`: Redis `SET`, `GET`, and key expiration
+- [`02-site-banner/`](02-site-banner/): Redis `SET`, `GET`, `DEL`, and `EXISTS` with an Express banner API
 - `03/`: MongoDB query caching
 - `04/`: Redis lists, hashes, and sets
 - `05/`: Pub/sub and real-time events
