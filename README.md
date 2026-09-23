@@ -25,7 +25,7 @@ This repository is a step-by-step learning space for Redis. The examples are sma
 - MongoDB, using `mongoose`
 - Docker Compose for local database services
 
-The examples currently live in [`01`](01/) and [`02-site-banner`](02-site-banner/).
+The examples currently live in [`01`](01/), [`02-site-banner`](02-site-banner/), and [`03-login-otp-with-ttl`](03-login-otp-with-ttl/).
 
 ## Project structure
 
@@ -45,11 +45,17 @@ Redis/
   |-- package-lock.json
   `-- src/
     `-- index.js
+`-- 03-login-otp-with-ttl/
+  |-- package.json
+  `-- src/
+    `-- index.js
 ```
 
 Read [`01/node.txt`](01/node.txt) for detailed notes about the example, commands, endpoints, environment variables, and troubleshooting.
 
 Read [`02-site-banner/node.txt`](02-site-banner/node.txt) for detailed notes about the banner API, Redis commands, request examples, and troubleshooting.
+
+The [`03-login-otp-with-ttl`](03-login-otp-with-ttl/) example stores one-time passwords in Redis with a 30-second TTL and deletes them after successful verification.
 
 ## Quick start
 
@@ -138,12 +144,12 @@ docker compose down -v
 
 The [`02-site-banner`](02-site-banner/) example uses Redis as a simple shared store for a website banner message. It demonstrates the core Redis key commands through an Express API:
 
-| Method | Endpoint | Redis operation | Purpose |
-| --- | --- | --- | --- |
-| POST | `/banner` | `SET` | Create or update the banner message |
-| GET | `/banner` | `GET` | Read the current banner message |
-| DELETE | `/banner` | `DEL` | Remove the banner message |
-| GET | `/banner/health` | `EXISTS` | Check whether a banner exists |
+| Method | Endpoint         | Redis operation | Purpose                             |
+| ------ | ---------------- | --------------- | ----------------------------------- |
+| POST   | `/banner`        | `SET`           | Create or update the banner message |
+| GET    | `/banner`        | `GET`           | Read the current banner message     |
+| DELETE | `/banner`        | `DEL`           | Remove the banner message           |
+| GET    | `/banner/health` | `EXISTS`        | Check whether a banner exists       |
 
 Run it from its folder after Redis is available:
 
